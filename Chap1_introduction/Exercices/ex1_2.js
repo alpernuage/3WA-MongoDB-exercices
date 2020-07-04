@@ -31,7 +31,7 @@ while (myCursor.hasNext()) {
     print(tojson(myCursor.next()));
 }
 
-// Combien y a t il de restaurants qui font de la cuisine italienne et qui ont eu un score de 10 au moins ? Affichez également le nom, les scores et les coordonnées GPS de ces restaurants. Ordonnez les résultats par ordre décroissant sur les noms des restaurants.
+// 1. Combien y a t il de restaurants qui font de la cuisine italienne et qui ont eu un score de 10 au moins ? Affichez également le nom, les scores et les coordonnées GPS de ces restaurants. Ordonnez les résultats par ordre décroissant sur les noms des restaurants.
 db.collection.findOne(query, restriction).sort({
     key: 1
 }) // 1 for ascending order and -1 for descending
@@ -47,13 +47,14 @@ db.restaurants.find({
     }
 }, {
     name: 1,
-    grades: 1,
-    coord: 1
+    _id: 0,
+    "grades.score": 1,
+    "address.coord": 1
 }).sort({
     name: 1
-}).count()
+})
 
-// code ebauche avant partie détaillé
+// code ebauche avant la partie détaillé
 db.restaurants.find({
     cuisine: "Italian"
 }).sort({
@@ -71,13 +72,18 @@ db.restaurants.find({
     }
 }
 
-db.restaurants
-    .find({        cuisine: "Italian",
-        "grades.score": {            $lte: 10        }
-    }, {        name: 1,
-        _id: 0,
-        "grades.score": 1
-    })
-    .sort({
-        name: 1
-    });
+// 2. Quels sont les restaurants qui ont un grade A avec un score supérieur ou égal à 20 ? Affichez uniquement les noms et ordonnez les par ordre décroissant. Affichez le nombre de résultat.
+db.restaurants.find({
+    $and: [{
+        "grades.grade": "A"
+    }, {
+        "grades.score": {
+            $gte: 20
+        }
+    }]
+}, {
+    _id: 0,
+    name: 1
+}).sort({
+    name: -1
+}).count()
