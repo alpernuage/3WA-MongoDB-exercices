@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_","ns":"ny.restaurants"}],"uuid":"638e0be04c8a450badd514de8ef4b8c4"}
